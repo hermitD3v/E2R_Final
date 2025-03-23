@@ -1,18 +1,11 @@
 import requests
 
-# Function to read the entire CSV file and return its content as a string
-def read_csv_as_string(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
-        return file.read()
-
-# Read the CSV file
-csv_content = read_csv_as_string('Chasis\hbi.csv')
-
 # TeamCity API details
-url = "https://hdmtteamcity.intel.com/httpAuth/app/rest/buildQueue"
+url = "https://hdmtteamcity.intel.com/app/rest/buildQueue"
+token = "eyJ0eXAiOiAiVENWMiJ9.ZWxXdUx4LU45WWNGRHRXakZodVlSV0hCaDUw.ZWVkNzAzYWItNjhhYi00ZmM1LTkwMjAtMzg2OGQzNzNiZGUz"
 headers = {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiAiVENWMiJ9.ZWxXdUx4LU45WWNGRHRXakZodVlSV0hCaDUw.ZWVkNzAzYWItNjhhYi00ZmM1LTkwMjAtMzg2OGQzNzNiZGUz"
+    "Authorization": f"Bearer {token}",
+    "Content-Type": "application/json"
 }
 
 # JSON payload with the CSV content as a parameter and specifying the agent
@@ -21,23 +14,19 @@ data = {
         "id": "Hdmt3x_Sandbox_E2r_TriggerPartFlows"
     },
     "agent": {
-        "id": "KM-HBI-10065"  # Replace with the actual agent ID
+        "id": "353063"  # Replace with the actual agent ID       KM-HBI-10065 43996        KM-HBI-10066 353063
     },
     "properties": {
         "property": [
             {
-                "name": "input_csv",
-                "value": csv_content
+                "name": "SessionID",
+                "value": "hbi"
             }
         ]
     }
 }
-proxies = {
-    "http": "http://proxy-iind.intel.com:912",
-    "https": "http://proxy-iind.intel.com:912",
-}
 
-response = requests.post(url, json=data, headers=headers, proxies=proxies)
+response = requests.post(url, json=data, headers=headers, verify=False)
 
 
 # Check the response
