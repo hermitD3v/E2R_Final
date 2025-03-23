@@ -1,7 +1,7 @@
 #sh gitPartClone.sh <branch_name> <number_of_commits>
 branch="$1"
 d=$2
-rm /r PartRepo
+rmdir /s /q PartRepo
 mkdir PartRepo
 cd PartRepo
 git clone --filter=blob:none --origin upstream --sparse https://ATTD@dev.azure.com/ATTD/HDMT_Prod/_git/HDMTOS -b $branch --depth $(($d + 1))
